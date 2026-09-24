@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 //Rarity uses an enum because every item should have
 // One value ONLY from a fixed set of valid rarity levels
@@ -22,13 +23,13 @@ std::string category;
 int value;
 
 // Displays items information in a consistent format
-void display(){
+void display() const {
     std::cout << "Name: " << name << '\n';
     std::cout << "Category: " << category << '\n';
     std::cout << "Value: " << value << '\n';
     std::cout << "Rarity: ";
 
-//Enum from before
+//Converts the rarity enum value into readable text
 
     switch(rarity){
        case COMMON: std::cout << "Common";
@@ -75,9 +76,25 @@ int main() {
     item3.category = "Artifact";
     item3.value = 250.0;
 
-    item1.display();
-    item2.display();
-    item3.display();
+//Stores item into a dynamic collection
+//Needed as more items will be added
+//Keeping items togther will make searching, sorting, 
+//pack generation, and inventory management later easier.
+    std::vector<item> items;
+
+//Adds each item to the end of the vector 
+    items.push_back(item1);
+    items.push_back(item2);
+    items.push_back(item3);
+
+  //Loops through each Item without copying or modifying it
+    for(const item& item : items){
+        item.display();
+    }
+     // REMOVED:
+    // item1.display();
+    // item2.display();
+    // item3.display();
 
     return 0;
 }
