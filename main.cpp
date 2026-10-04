@@ -13,7 +13,7 @@ enum Rarity {
     LEGENDARY
 };
 // Collectible item information
-class item {
+class Item {
 public:
 std::string name;
 Rarity rarity;
@@ -58,29 +58,29 @@ void display() const {
 
 int main() {
 
-    item item1;
+    Item item1;
     item1.name = "Ember Blade";
     item1.rarity = RARE;
     item1.category = "Weapon";
-    item1.value = 75.0;
+    item1.value = 75;
 
-    item item2;
+    Item item2;
     item2.name = "Tide Crystal";
     item2.rarity = COMMON;
     item2.category = "Crystal";
-    item2.value = 15.0;
+    item2.value = 15;
 
-    item item3;
+    Item item3;
     item3.name = "Void Crown";
     item3.rarity = LEGENDARY;
     item3.category = "Artifact";
-    item3.value = 250.0;
+    item3.value = 250;
 
 //Stores item into a dynamic collection
 //Needed as more items will be added
 //Keeping items togther will make searching, sorting, 
-//pack generation, and inventory management later easier.
-    std::vector<item> items;
+//pack generation, and inventory management easier later.
+    std::vector<Item> items;
 
 //Adds each item to the end of the vector 
     items.push_back(item1);
@@ -88,7 +88,7 @@ int main() {
     items.push_back(item3);
 
   //Loops through each Item without copying or modifying it
-    for(const item& item : items){
+    for(const Item& item : items){
         item.display();
     }
      // REMOVED:
