@@ -55,12 +55,6 @@ void display() const {
 }
 };
 
-//V0.3
-//Generates a pack by randomly selecting Items
-//From the existing loot pool
-//
-//const reference is used so the entire vector is not copied,
-// while also preventing this function from modifying the pool
 
 // Chooses a rarity using weighted probabilities
 Rarity chooseRarity(std::mt19937& generator) {
@@ -153,12 +147,51 @@ std::vector<Item> openPack(
     //Sends completed pack back to main()
     return pack;
 }
+// Adds every Item from an opened pack to the user's inventory.
+// The pack is read-only, while inventory is passed by reference
+// because this function needs to permanently add Items to it.
+void addPackToInventory(
+    const std::vector<Item>& pack,
+    std::vector<Item>& inventory
+) {
+
+    for (const Item& item : pack) {
+        inventory.push_back(item);
+    }
+}
+// Displays every Item currently owned by the user.
+// const reference avoids copying the entire inventory
+// and prevents this function from modifying it.
+
+void displayInventory(
+    const std::vector<Item>& inventory
+) {
+
+    std::cout << "\n===== INVENTORY =====\n\n";
+
+    // Handles the case where the user has not collected anything yet.
+    if (inventory.empty()) {
+        std::cout << "Your inventory is empty.\n";
+        return;
+    }
+
+    // Displays each Item currently stored in the inventory.
+    for (int i = 0; i < inventory.size(); i++) {
+
+        std::cout << "Inventory Item " << i + 1 << ":\n";
+
+        inventory[i].display();
+    }
+}
 
 
 int main() {
 
-// Seeds the random number generator once when the program starts.
-// Using the current time helps produce different results for each run.
+
+
+
+// Creates a random seed and uses it to initialize
+// the random-number generator used by the pack system.
 std::random_device randomDevice;
 std::mt19937 generator(randomDevice());
 
@@ -196,6 +229,9 @@ item5.value = 140;
 // be selected when generating a TradeForge pack
     std::vector<Item> itemPool;
 
+//Stores every Item the user currently owns
+std::vector<Item> inventory;
+
 //Adds each item to the end of the vector 
     itemPool.push_back(item1);
     itemPool.push_back(item2);
@@ -211,6 +247,11 @@ std::cout << "===== PACK OPENED =====\n\n";
 for (const Item& item : pack) {
     item.display();
 }
+// Moves the newly pulled Items into the user's collection.
+addPackToInventory(pack, inventory);
+
+// Shows every Item the user currently owns.
+displayInventory(inventory);
 
     return 0;
 }
