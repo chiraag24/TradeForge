@@ -239,19 +239,58 @@ std::vector<Item> inventory;
     itemPool.push_back(item4);
     itemPool.push_back(item5);
 
-// Stores the completed pack returned by openPack().
-std::vector<Item> pack = openPack(itemPool, generator);
-std::cout << "===== PACK OPENED =====\n\n";
+// Controls whether the TradeForge menu keeps running.
+bool running = true;
 
-// Displays every Item that was stored inside the pack.
-for (const Item& item : pack) {
-    item.display();
+while (running) {
+
+    std::cout << "\n===== TRADEFORGE =====\n";
+    std::cout << "1. Open Pack\n";
+    std::cout << "2. View Inventory\n";
+    std::cout << "3. Exit\n";
+    std::cout << "Enter choice: ";
+
+    int choice;
+    std::cin >> choice;
+
+    switch (choice) {
+
+        case 1: {
+            // Generates a new pack of Items.
+            std::vector<Item> pack =
+                openPack(itemPool, generator);
+
+            std::cout << "\n===== PACK OPENED =====\n\n";
+
+            // Displays every Item pulled from the pack.
+            for (const Item& item : pack) {
+                item.display();
+            }
+
+            // Adds copies of the pulled Items
+            // to the user's existing inventory.
+            addPackToInventory(pack, inventory);
+
+            break;
+        }
+
+        case 2:
+            // Displays everything the user has collected so far.
+            displayInventory(inventory);
+            break;
+
+        case 3:
+            // Ends the menu loop and allows the program to finish.
+            running = false;
+            std::cout << "\nThanks for using TradeForge!\n";
+            break;
+
+        default:
+            // Handles menu choices other than 1, 2, or 3.
+            std::cout << "\nInvalid choice. Please try again.\n";
+            break;
+    }
 }
-// Moves the newly pulled Items into the user's collection.
-addPackToInventory(pack, inventory);
 
-// Shows every Item the user currently owns.
-displayInventory(inventory);
-
-    return 0;
+return 0;
 }
